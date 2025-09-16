@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartment Management System In Brgy 13 Ilawod West Legazpi Albay</title>
+    <link rel="icon" type="image/jpeg" href="apartment.jfif">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <div id="landing-page" class="page active">
+        <div class="container">
+            <header class="header">
+                <div class="hero">
+                    <h1 class="hero-title">APARTMENT MANAGEMENT SYSTEM</h1>
+                    <h2 class="hero-subtitle">IN BRGY. 13 ILAWOD WEST</h2>
+                    <div class="hero-accent"></div>
+                    <div class="hero-location">LEGAZPI CITY, ALBAY</div>
+                </div>
+            </header>
+
+            <div class="role-selection">
+                <h2>Choose Your Role</h2>
+                <div class="role-cards">
+                    <div class="role-card" onclick="selectRole('tenant')">
+                        <i class="fas fa-user"></i>
+                        <h3>Tenant</h3>
+                        
+                    </div>
+                    <div class="role-card" onclick="selectRole('owner')">
+                        <i class="fas fa-home"></i>
+                        <h3>Owner</h3>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-buttons">
+                <button class="btn btn-primary" onclick="showAuthModal('signup')">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+                <button class="btn btn-secondary" onclick="showAuthModal('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn btn-outline" onclick="showFindApartment()">
+                    <i class="fas fa-search"></i> Find Apartment/Unit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuthModal()">&times;</span>
+            <div class="auth-grid">
+                <div class="auth-left"></div>
+                <div class="auth-right">
+                    <h2 id="auth-title">Sign Up</h2>
+                    <form id="auth-form">
+                        <div id="selected-role-chip" class="selected-role-badge" style="display:none;">Role: <span id="selected-role-text"></span></div>
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" name="fullname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="form-group" id="phone-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group" id="permit-group" style="display: none;">
+                            <label for="business-permit">Business Permit (PDF/IMG)</label>
+                            <input type="file" id="business-permit" name="business-permit" accept=".pdf,.jpg,.jpeg,.png">
+                            <small>Required for apartment owners</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                    </form>
+                    <p id="auth-switch">
+                        Already have an account? <a href="#" onclick="switchAuthMode('login')">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="find-apartment-page" class="page">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-building"></i> Apartment Management System
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-outline" onclick="goToLanding()">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </div>
+        </nav>
+
+        <div class="container">
+            <h1>Find Your Perfect Apartment</h1>
+            
+            <div class="search-filters">
+                <div class="filter-group">
+                    <label for="search-location">Location</label>
+                    <input type="text" id="search-location" placeholder="Enter city or area">
+                </div>
+                <div class="filter-group">
+                    <label for="search-price-min">Min Price</label>
+                    <input type="number" id="search-price-min" placeholder="Min price">
+                </div>
+                <div class="filter-group">
+                    <label for="search-price-max">Max Price</label>
+                    <input type="number" id="search-price-max" placeholder="Max price">
+                </div>
+                <div class="filter-group">
+                    <label for="search-rooms">Rooms</label>
+                    <select id="search-rooms">
+                        <option value="">Any</option>
+                        <option value="1">1 Room</option>
+                        <option value="2">2 Rooms</option>
+                        <option value="3">3 Rooms</option>
+                        <option value="4+">4+ Rooms</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="search-status">Status</label>
+                    <select id="search-status">
+                        <option value="">Any</option>
+                        <option value="available">Available</option>
+                        <option value="occupied">Occupied</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="searchApartments()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+
+            <div id="apartment-results" class="apartment-grid">
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="tenant-dashboard" class="page">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-building"></i> Tenant Dashboard
+            </div>
+            <div class="nav-actions">
+                <span id="tenant-name">Welcome, User</span>
+                <button class="btn btn-outline" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#" onclick="showTenantSection('my-unit')" class="active">
+                        <i class="fas fa-home"></i> My Unit
+                    </a></li>
+                    <li><a href="#" onclick="showTenantSection('payments')">
+                        <i class="fas fa-credit-card"></i> Payments
+                    </a></li>
+                    <li><a href="#" onclick="showTenantSection('maintenance')">
+                        <i class="fas fa-tools"></i> Maintenance Requests
+                    </a></li>
+                    <li><a href="#" onclick="showTenantSection('announcements')">
+                        <i class="fas fa-bullhorn"></i> Announcements
+                    </a></li>
+                    <li><a href="#" onclick="showTenantSection('find-apartment')">
+                        <i class="fas fa-search"></i> Find Apartment
+                    </a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div id="tenant-content">
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+
+    
+    <div id="owner-dashboard" class="page">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-building"></i> Owner Dashboard
+            </div>
+            <div class="nav-actions">
+                <span id="owner-name">Welcome, Owner</span>
+                <button class="btn btn-outline" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#" onclick="showOwnerSection('my-apartments')" class="active">
+                        <i class="fas fa-building"></i> My Apartments
+                    </a></li>
+                    <li><a href="#" onclick="showOwnerSection('my-tenants')">
+                        <i class="fas fa-users"></i> My Tenants
+                    </a></li>
+                    <li><a href="#" onclick="showOwnerSection('rent-requests')">
+                        <i class="fas fa-handshake"></i> Rent Requests
+                    </a></li>
+                    <li><a href="#" onclick="showOwnerSection('payments')">
+                        <i class="fas fa-chart-line"></i> Payments
+                    </a></li>
+                    <li><a href="#" onclick="showOwnerSection('maintenance')">
+                        <i class="fas fa-tools"></i> Maintenance Status
+                    </a></li>
+                    <li><a href="#" onclick="showOwnerSection('profile-management')">
+                        <i class="fas fa-user-cog"></i> Profile Management
+                    </a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div id="owner-content">
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+
+    
+    <script src="script.js"></script>
+    <script src="owner-features.js"></script>
+</body>
+</html>
